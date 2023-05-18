@@ -1,0 +1,12 @@
+POST http://localhost:5000/api/food/res
+Content-Type: application/json
+
+{
+  "title": "sang12344",
+  "description": "DDM12344242",
+  "price": "13",
+  "image":"/"
+}
+
+
+GET  http://localhost:5000/register
