@@ -15,6 +15,7 @@ const bookingSchema = new mongoose.Schema({
   },
   point: Number,
   quantity: Number,
+  hotelName: String,
 });
 
 module.exports = mongoose.model("booking", bookingSchema);

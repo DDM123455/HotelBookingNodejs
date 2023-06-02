@@ -1,8 +1,49 @@
 const express = require("express");
-
+const multer = require("multer");
+const fs = require("fs");
+const path = require("path");
 const User = require("../models/usermodel");
+const mime = require("mime-types");
+
 const router = express.Router();
-// Đăng ký tài khoản
+// Đăng ký tài khoản]
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "images/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
+
+// Xử lý request POST tải lên hình ảnh
+router.post("/upload-image", upload.single("image"), (req, res) => {
+  res.send("ok");
+
+  // Lưu thông tin hình ảnhvào MongoDB ở đây...
+});
+router.get("/images/:filename", (req, res) => {
+  const filename = req.params.filename;
+  const imagePath = path.join(
+    "C:\\Users\\sickb\\OneDrive\\Máy tính\\HotelBooking\\",
+    "images",
+    filename
+  );
+
+  fs.readFile(imagePath, (err, data) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send("Server error");
+    } else {
+      const contentType = mime.lookup(filename);
+      res.writeHead(200, { "Content-Type": contentType });
+      res.end(data);
+    }
+  });
+});
 router.post("/register", async (req, res) => {
   const newUser = new User({
     name: req.body.name,

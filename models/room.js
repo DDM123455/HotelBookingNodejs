@@ -4,7 +4,7 @@ const roomSchema = new mongoose.Schema({
   type: { type: String, required: true },
   price: { type: Number, required: true },
   available: { type: Boolean, required: true },
-  amenities: [{ type: String }],
+  image: { type: String },
 });
 const Room = mongoose.model("Room", roomSchema);
 

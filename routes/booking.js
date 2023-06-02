@@ -2,6 +2,7 @@ const express = require("express");
 var router = express.Router();
 const BookingModel = require("../models/booking.js");
 const User = require("../models/usermodel.js");
+const Hotel = require("../models/hotelmodel.js");
 
 var to;
 
@@ -21,7 +22,9 @@ router.post("/", async (req, res) => {
     point: req.body.point,
     roomType: req.body.roomType,
     status: req.body.status,
+    hotelName: req.body.hotelName,
   });
+  const numberQuan = parseInt(req.body.quantity);
 
   const saveBooking = await categories.save();
 
@@ -38,6 +41,15 @@ router.post("/", async (req, res) => {
       { new: true }
     );
   }
+  console.log(req.body.hotelName);
+  console.log(req.body.roomType);
+
+  const updatedHotel = await Hotel.findOneAndUpdate(
+    { name: req.body.hotelName, "rooms.roomName": req.body.roomType },
+    { $inc: { "rooms.$.quantity": -numberQuan } },
+    { new: true }
+  );
+  console.log(updatedHotel);
 
   res.send(saveBooking);
 });
@@ -100,11 +112,17 @@ router.post("/", async (req, res) => {
 router.post("/:id", async (req, res) => {
   const id = req.params.id;
   const status = req.body.status;
+  const number = req.body.quantityOrder;
 
   try {
     const booking = await BookingModel.findByIdAndUpdate(
       id,
       { status: status },
+      { new: true }
+    );
+    const updatedHotel = await Hotel.findOneAndUpdate(
+      { name: req.body.hotelName, "rooms.roomName": req.body.roomType },
+      { $inc: { "rooms.$.quantity": +number } },
       { new: true }
     );
     // cập nhật lại điểm

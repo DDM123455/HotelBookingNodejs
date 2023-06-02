@@ -25,6 +25,8 @@ router.post("/res", async (req, res) => {
     nearby_attractions: req.body.nearby_attractions,
     rooms: req.body.rooms,
     star: req.body.star,
+    toado1: req.body.toado1,
+    toado2: req.body.toado2,
   });
   const saveHotel = await hotel.save();
   console.log(saveHotel);
