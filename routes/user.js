@@ -80,9 +80,15 @@ router.get("/register", (req, res) => {
 });
 router.put("/update/:id", async (req, res) => {
   try {
+    const updatedFields = {};
+    Object.keys(req.body).forEach((key) => {
+      if (req.body[key] !== null && req.body[key] !== undefined) {
+        updatedFields[key] = req.body[key];
+      }
+    });
     const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
-      { $set: req.body },
+      { $set: updatedFields },
       { new: true }
     );
     res.status(200).json(updatedUser);
