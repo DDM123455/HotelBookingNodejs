@@ -23,6 +23,8 @@ router.post("/", async (req, res) => {
     roomType: req.body.roomType,
     status: req.body.status,
     hotelName: req.body.hotelName,
+    toado1: req.body.toado1,
+    toado2: req.body.toado2,
   });
   const numberQuan = parseInt(req.body.quantity);
 
